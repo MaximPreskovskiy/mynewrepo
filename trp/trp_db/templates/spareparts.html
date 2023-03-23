@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title> TRP-GROUP.База технической информации </title>
+{% endblock %}
+
+{% block body %}
+
+{% for i in new %}
+
+<div class="row">
+    <div class="card" style="width: 18rem; margin-top: 70px; margin-left: 70px;">
+        <img src="{% static i.image_name.image|cut:'trp_db/static' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{i.name}}</h5>
+            <p class="card-text">{{i.description}}</p>
+            <a href="/prod_card/{{ i.id_num }}" class="btn btn-primary">Подробнее</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

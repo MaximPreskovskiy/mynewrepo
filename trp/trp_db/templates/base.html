@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="eng">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <style>
+        body {
+            background: url("{% static 'pic/bg1.jpg' %}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+
+    {% block title %} {% endblock %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+
+    <header>
+
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">TRP-GROUP</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/orders">Заказы</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/spareparts">Запчасти</a>
+                        </li>
+
+                    </ul>
+                    <form action="http://127.0.0.1:8000/search/" class="d-flex" role="search" method="POST">
+                        {%csrf_token%}
+                        <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search"
+                            name="search">
+                        <button class="btn btn-outline-success" type="submit">Поиск</button>
+                    </form>
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="
+                        {% if name %}
+                        #logged
+                        {% else %}
+                        #authorization
+                        {% endif %}
+                    ">
+
+                        {% if name %}
+                        {{name}}
+                        {% else %}
+                        Вход | Регистрация
+                        {% endif %}
+
+                    </button>
+
+                </div>
+            </div>
+        </nav>
+
+    </header>
+
+
+
+
+    <div class="modal fade" id="logged" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Здравствуйте, {{ name }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3>Вы вошли в систему. Приятной работы.</h3>
+
+                </div>
+                <div class="modal-footer">
+                    <form action="http://127.0.0.1:8000/logout/" method="POST">
+                        {%csrf_token%}
+                        <button type="submit" class="btn btn-primary">Выйти</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="authorization" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Вход</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="http://127.0.0.1:8000/auth/" method="POST">
+                        {%csrf_token%}
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Имя пользователя</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                name="username">
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="submit" class="btn btn-primary">Войти</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-target="#reg" data-bs-toggle="modal">Регистрация</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="reg" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="reg">Регистрация</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="http://127.0.0.1:8000/reg/" method="POST">
+                        {%csrf_token%}
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Имя пользователя</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                name="reg_username">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="reg_password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Зарегитрироваться</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-target="#authorization" data-bs-toggle="modal">Вход</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% block body %}
+
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
