@@ -28,5 +28,6 @@ urlpatterns = [
     path('spareparts', spareparts),
     path('order_card/<ID_CommNumber>', order_card),
     path('prod_card/<id_num>', prod_card),
-    path('logout/', logout_user)
+    path('logout/', logout_user),
+    path('test/', test)
 ]

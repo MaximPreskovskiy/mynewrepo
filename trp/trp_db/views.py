@@ -83,3 +83,7 @@ def logout_user(request):
     if request.method == "POST":            
         logout(request)
         return redirect("http://127.0.0.1:8000/")
+    
+
+def test(request):
+    return render(request, 'test.html')
